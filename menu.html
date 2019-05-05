@@ -1,18 +1,29 @@
 <!DOCTYPE html>
 <html lang="en-US">
 <title>Menu</title>
-<link rel="stylesheet" href="menu.css">
 <script src="taffy.js"></script>
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet"  href="https://fonts.googleapis.com/css?family=Tangerine">
+<script src="store.js" async></script>
 
 <body>
-<button id = "shoppingCart" type="button" class="shoppingCart" onclick="cartButton()"> Cart</button>
-<button id = "logout" type="button" class="logout">Logout</button>
+        <header class="main-header">
+                <h6 class="band-name band-name-large">Three Sons Cafe</h6>
+            </header>
+            <br>
+            <marquee class="marquee">Welcome to three sons Cafe! </marquee>
+<button id = "logout" type="button" class='btn btn-primary logout' onclick="logout()">Logout</button>
 <br>
-<h1>Menu</h1>
+
+<table>
+<tr>
+<td>
 <script>
-var $ = function(id) {
-     return document.getElementById(id); 
-};
+    var $ = function(id) {
+         return document.getElementById(id); 
+    };
+
+    var cartArray = [];
     var menu = TAFFY([
         {"id":1,"item_name":"Bacon Sandwich","price": 5.49,"calories":640},
         {"id":2,"item_name":"Cheeseburger", "price": 1.19,"calories":300},
@@ -25,42 +36,63 @@ var $ = function(id) {
         {"id":9,"item_name":"Chicken Nuggets", "price": 1.19,"calories": 190},
         {"id":10,"item_name":"Coke", "price": 5.00,"calories": 400},
         {"id":11,"item_name":"Fruit Punch", "price": 1.00,"calories": 230}	
-    ]);
+    ]);    
 
-    var cart_items = TAFFY();
-    
-
-    document.write(
-        "<div class='row'>");
+    document.write("<section class='container content-section'>"
+                    +"<h2 class='section-header'>MENU</h2>"
+                    +"<div class='shop-items'>");
     menu().each(function (r) {
-        var image = "Images/"+r.item_name+".jpg";
-        document.write("<div class = 'column'>"
-                        +"<br><img class ='img' src='"+image+"'<br>"
-                        +"<p id='itemName'"+r.item_name+"</p><p id='itemPrice'>$"
-                        + r.price+"</p>"+r.calories+" cal<br>"
-                        +"<button id = 'addToCart' type='button' class='addToCart' onclick='addItemsToCart()'>Add to cart</button><br>"
+
+        var item = r.item_name;
+        var price = r.price;
+        var image;
+        var imageArray = item.split(" ");
+        if(imageArray.length>1){
+            image = "Images/"+imageArray[0] + imageArray[1]+".jpg";
+        }else{
+            image = "Images/"+imageArray[0]+".jpg";
+        }
+
+        document.write("<div class='shop-item'>"
+                            +"<span class='shop-item-title'>"+item+"</span>"
+                            +"<img class='shop-item-image' src="+image+">"
+                            +"<div class='shop-item-details'>"
+                            +"<span class='shop-item-price'>$"+price+"</span>"
+                            +"<button class='btn btn-primary shop-item-button' type='button'>ADD TO CART</button>"
+                            +"</div>"
                         +"</div>");
     });
-    document.write("</div>");
 
-    function addItemsToCart(){
+    document.write("</div></section>");
 
-        alert("Item added to the cart");
-
-        var itemName = $("itemName").value;
-        var itemPrice = $("itemPrice").value;
-
-        cart_items.insert({item_name:itemName,item_price:itemPrice});
-        alert(cart_items().count());
+    function logout(){
+        window.location = "index.html";
     }
 
-    function cartButton(){
-        window.location = "cart.html";
-    }
-    
-    
-    
+    function preventBack() { window.history.forward(); }
+        setTimeout("preventBack()", 0);
+        window.onunload = function () { null };
 
 </script>
+</td>
+<td style="display:block;position:relative;top:20px;" rowspan="2">
+    <section class="container content-section">
+            <h2 class="section-header">CART</h2>
+            <div class="cart-row">
+                <span class="cart-item cart-header cart-column">Item</span>
+                <span class="cart-price cart-header cart-column">Price</span>
+                <span class="cart-quantity cart-header cart-column">Quantity</span>
+            </div>
+            <div class="cart-items">
+            </div>
+            <div class="cart-total">
+                <strong class="cart-total-title">Total</strong>
+                <span class="cart-total-price">$0</span>
+            </div>
+            <button class="btn btn-primary btn-purchase" type="button">PURCHASE</button>
+    </section>
+</td>
+</tr>
+</table>
 </body>
 </html>
